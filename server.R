@@ -1,65 +1,61 @@
-
-# This is the server logic for a Shiny web application.
-# You can find out more about building applications with Shiny here:
+#---------------------------------------------------------------------------
 #
-# http://shiny.rstudio.com
+# Example Shiny App (Server component)
+# Stock Correlation calculation and chart
 #
+# This app is an extension/modification of:
+# https://www.r-bloggers.com/recreating-rviews-reproducible-finance-with-r-sector-correlations/
+# that shows how to use tidyquant to compute and vizualize stock correlations with an index.
+#
+# The app is then wrapped in a Shiny app that allows user to select the ETFs of interest,
+# an index and then display the correlation chart.
+#
+#---------------------------------------------------------------------------
 
 library(shiny)
 library(dygraphs)
 
+# source our utility functions and global variables
 source('stock_corr.R', echo=FALSE)
 
-# load etf data (this takes a while). 
-# Do this out ofd shinyServer so this is done only once
-data_loading <- TRUE
+# Will cache the etf data once per application as this is an expensive operation
 etf_data <- NULL
-data_loading <- FALSE
 
+#---------------------------------------------------------------------------
 # 
+# Shiny Server function
+#
+#---------------------------------------------------------------------------
+
 shinyServer(function(input, output, session) {
   
-  # send the sector list to the UI
+  # TODO: send the sector list to the UI
   # output$sector <- dput(sector)
   # output$default_sector <- sector[1]
   
-  
-    # TODO: do some changes based on inputs
-  
-    # this will pass the flag that indicates data is loading to the UI
-    #output$data_loading <- reactive(data_loading)
-  
-    # output$msg <- renderText({ 
-    #   if (data_loading) {
-    #     msg <- "Data is beling loaded. Please wait..."
-    #   } else {
-    #     msg <- ""
-    #   }
-    #   msg
-    # })
+  # render the chart
+  output$corr_dygraph <- renderDygraph({
 
-    #output$msg <- "Calculation in progress..."
-  
-    # render the chart
-    output$corr_dygraph <- renderDygraph({
-      #etf_data <- load_data()
+    # cache the etf_data on first call. Also show a progress message on the UI
+    if (is.null(etf_data)) {
+      progress <- Progress$new(session, min=1, max=15)
+      on.exit(progress$close())
       
-      if (is.null(etf_data)) {
-        progress <- Progress$new(session, min=1, max=15)
-        on.exit(progress$close())
-        
-        progress$set(message = 'Loading ETF stock prices', detail = 'This may take a while...')
-        
-        etf_data <<- load_data()
-      }
+      progress$set(message = 'Loading ETF stock prices', 
+                   detail = 'This may take a while...')
       
-      g <- etf_data %>%
-        isolate_index(get_ticker(input$index_sector)) %>%
-        calc_correlations() %>%
-        get_chart(input$index_sector, input$etf_sector)
-      
-      g
-    })
+      etf_data <<- load_data()
+    }
+    
+    # now generate the gygraph with inputs from the UI
+    g <- 
+      etf_data %>%
+      isolate_index(get_ticker(input$index_sector)) %>%
+      calc_correlations() %>%
+      get_chart(input$index_sector, input$etf_sector)
+    
+    g
+  })
 
 })
 
