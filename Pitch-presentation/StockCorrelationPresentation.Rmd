@@ -11,19 +11,20 @@ output   :
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-
-# source shiny app global variables and utility functions
-source('../Shiny-app/stock_corr.R', echo=FALSE)
 ```
 
-## Summary
+## Summary {.smaller}
 
 This Shiny App allows a user to analyze the correlation between a sector ETF and an Index or another sector ETF. The app can be run from [here](https://bkelemen.shinyapps.io/StockCorrelationShinyApp/).
 
 An [ETF](https://en.wikipedia.org/wiki/Exchange-traded_fund) is an investment fund traded on stock exchanges, much like stocks. The rolling 20-day correlation with an index or another ETF allows us to understand how the ETF returns are correlated to the index.
 
 Example, for ETF sector "Consumer Discretionary" and Index "SPY Index", the chart below indicates that on average the correlation is close to 0.9 (highly correlated):
-```{r genchart, echo=FALSE, cache=TRUE, fig.width=8, fig.height=3, fig.align='center'}
+```{r genchart, echo=TRUE, cache=TRUE, fig.width=8, fig.height=3, fig.align='center'}
+# source utility functions from shiny app
+source('../Shiny-app/stock_corr.R', echo=FALSE)  
+
+# display the chart
 load_data() %>%
   isolate_index(get_ticker("SPY Index")) %>%
   calc_correlations() %>%
