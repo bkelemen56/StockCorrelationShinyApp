@@ -1,0 +1,62 @@
+---
+title    : ETF Correlations
+subtitle : Sniny app to display ETF correlations
+author   : Bill Kelemen
+date     : "February 5, 2017"
+output   : 
+  slidy_presentation:
+    highlight: pygments
+    font_adjustment: -1
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# source shiny app global variables and utility functions
+source('../Shiny-app/stock_corr.R', echo=FALSE)
+```
+
+## Summary
+
+This Shiny App allows a user to analyze the correlation between a sector ETF and an Index or another sector ETF. The app can be run from [here](https://bkelemen.shinyapps.io/StockCorrelationShinyApp/).
+
+An [ETF](https://en.wikipedia.org/wiki/Exchange-traded_fund) is an investment fund traded on stock exchanges, much like stocks. The rolling 20-day correlation with an index or another ETF allows us to understand how the ETF returns are correlated to the index.
+
+Example, for ETF sector "Consumer Discretionary" and Index "SPY Index", the chart below indicates that on average the correlation is close to 0.9 (highly correlated):
+```{r genchart, echo=FALSE, cache=TRUE, fig.width=8, fig.height=3, fig.align='center'}
+load_data() %>%
+  isolate_index(get_ticker("SPY Index")) %>%
+  calc_correlations() %>%
+  get_chart("SPY Index", "Consumer Discretionary")
+```
+
+## Why is correlation important?
+
+When holding a portfolio of stocks, ETFs and other securities, we should take into account the correlation between them. This is important for the concept of *diversification*[1], that when properly applied, helps to limit our risk.
+
+Having a portfolio of only one stock seems very risky, as we're essentially betting all our investment on one stock. A better way is to have more than one stock ([remember  Enron?](https://en.wikipedia.org/wiki/Enron_scandal)). Doing so then raises the question of which stocks?
+
+If we choose stocks highly correlated, then our portfolio will move in tandem to them, and we have not largely reduced our risk.
+
+If we choose stocks that are not correlated or inversely correlated, then a decline in one will not necessarily mean a decline on the others. Therefore when our portfolio is well diversified, we should on average get a better return at lower risk than any individual security in the portfolio.
+
+## How do we calculate correlation?
+
+These calculations will rely on the `R` package `tidyquant`.
+
+To calculate the correlations between ETFs and the selected Index we follow this process which is a modified version of ["Reproducible Finance With R: Sector Correlations"](https://www.r-bloggers.com/recreating-rviews-reproducible-finance-with-r-sector-correlations/)[2].
+
+1. Download ETF prices for our sectors and calculate the [log of the returns](https://quantivity.wordpress.com/2011/02/21/why-log-returns/)[3]
+2. Isolate the Index returns to which all other ETFs will be correlated
+3. Calculate rolling 20-day correlations
+
+The source code is available on this [github repo](https://github.com/bkelemen56/StockCorrelationShinyApp).
+
+## References
+
+[1] Diversification: Protecting Portfolios From Mass Destruction, http://www.investopedia.com/articles/financial-theory/09/uncorrelated-assets-diversification.asp
+
+[2] Recreating RView’s "Reproducible Finance With R: Sector Correlations", mattdancho.com, https://www.r-bloggers.com/recreating-rviews-reproducible-finance-with-r-sector-correlations/
+
+[3] Why Log Returns, https://quantivity.wordpress.com/2011/02/21/why-log-returns/
+
