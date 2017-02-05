@@ -24,7 +24,7 @@ shinyUI(fluidPage(
   # section for the input controls
   fluidRow(
 
-    column(width = 5,
+    column(width = 3,
       selectInput("etf_sector", label = "ETF to correlate:",
                   choices = c("Consumer Discretionary", "Consumer Staples", 
                               "Energy", "Financials", "Health Care", "Industrials", 
@@ -38,11 +38,12 @@ shinyUI(fluidPage(
                   selected = "SPY Index")
     ),
     
-    column(width = 5, 
+    column(width = 8, 
            h5("Sample Shiny App that loads various ETFs and displays their correlation over a 20-day rolling window.",
               "Select a sector ETF to correlate, the Index (or another sector ETF)",
               "and a chart will be displayed with the rolling correlation.",
               br(), br(),
+              "An exchange-traded fund (ETF) is an investment fund traded on stock exchanges, much like stocks.",
               "For more information about ETFs, check out",
               a("Wikipedia.", href="https://en.wikipedia.org/wiki/Exchange-traded_fund"),
               br(), br(),
