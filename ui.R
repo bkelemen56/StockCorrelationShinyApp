@@ -36,10 +36,28 @@ shinyUI(fluidPage(
                               "Energy", "Financials", "Health Care", "Industrials", 
                               "Materials", "Information Technology", "Utilities", "SPY Index"),
                   selected = "SPY Index")
-    )
+    ),
     
-    # column(width = 5, 
-    #        p('This is area for documentation'))
+    column(width = 5, 
+           h5("Sample Shiny App that loads various ETFs and displays their correlation over a 20-day rolling window.",
+              "Select a sector ETF to correlate, the Index (or another sector ETF)",
+              "and a chart will be displayed with the rolling correlation.",
+              br(), br(),
+              "For more information about ETFs, check out",
+              a("Wikipedia.", href="https://en.wikipedia.org/wiki/Exchange-traded_fund"),
+              br(), br(),
+              "Complete documentation for this application is stored in this",
+              a("github repo", href="https://github.com/bkelemen56/StockCorrelationShinyApp"),
+              "together with the source files for the project.")
+    )
+           
+           # # adding the new div tag to the sidebar            
+           # tags$div(class="header", checked=NA,
+           #          tags$p("The documentation for this application is stored "),
+           #          tags$a(href="https://github.com/bkelemen56/StockCorrelationShinyApp", "here"),
+           #          tags$p(". You will also find the source files for this project.")
+           # )
+           # 
     
     #submitButton("Calculate correlation")
   ),
