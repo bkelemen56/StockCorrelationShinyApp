@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Sample Shiny App
 
-This repo contains a simple Shiny App that loads various ETFs and displays their correlation over a 20-day rolling window. The Shiny App can be found [here](https://bkelemen.shinyapps.io/StockCorrelationShinyApp/).
+This repo contains a simple Shiny App that loads various ETFs and displays their correlation over a 20-day rolling window. The Shiny App can be found [here](https://bkelemen.shinyapps.io/StockCorrelationShinyApp/) and the [pitch here](https://bkelemen56.github.io/StockCorrelationShinyApp/Pitch-presentation/StockCorrelationPresentation.html)
 
 As per Wikipedia, an exchange-traded fund (ETF) is an investment fund traded on stock exchanges, much like stocks. An ETF holds assets such as stocks, commodities, or bonds, and trades close to its net asset value over the course of the trading day. Most ETFs track an index, such as a stock index or bond index[1].
 
